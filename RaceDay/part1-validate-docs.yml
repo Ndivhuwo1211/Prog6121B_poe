@@ -1,0 +1,67 @@
+name: Part 1 - Validate Planning Documents
+
+# Runs on every push/PR so you get a green check as evidence of CI/CD
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ "**" ]
+  workflow_dispatch:
+
+jobs:
+  validate-docs:
+    name: Validate /docs folder structure
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check /docs folder exists
+        run: |
+          if [ ! -d "docs" ]; then
+            echo "::error::/docs folder is missing from the repository root."
+            exit 1
+          fi
+          echo "/docs folder found."
+
+      - name: Check for ERD (PNG or PDF)
+        run: |
+          shopt -s nullglob
+          matches=(docs/*.png docs/*.pdf docs/*ERD*)
+          if [ ${#matches[@]} -eq 0 ]; then
+            echo "::error::No ERD file (PNG or PDF) found in /docs."
+            exit 1
+          fi
+          echo "ERD file found: ${matches[0]}"
+
+      - name: Check for API endpoint plan (PDF or Markdown)
+        run: |
+          shopt -s nullglob
+          matches=(docs/*ndpoint* docs/*.md)
+          if [ ${#matches[@]} -eq 0 ]; then
+            echo "::error::No API endpoint plan (PDF or .md) found in /docs."
+            exit 1
+          fi
+          echo "API endpoint plan found: ${matches[0]}"
+
+      - name: Check for SQL database script
+        run: |
+          shopt -s nullglob
+          matches=(docs/*.sql)
+          if [ ${#matches[@]} -eq 0 ]; then
+            echo "::error::No .sql database script found in /docs."
+            exit 1
+          fi
+          echo "SQL script found: ${matches[0]}"
+
+      - name: Check README exists at repository root
+        run: |
+          if [ ! -f "README.md" ]; then
+            echo "::error::README.md is missing from the repository root."
+            exit 1
+          fi
+          echo "README.md found."
+
+      - name: Summary
+        run: echo "All required Part 1 planning documents are present. ✅"
