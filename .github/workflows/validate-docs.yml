@@ -1,6 +1,5 @@
 name: Part 1 - Validate Planning Documents
 
-# Runs on every push/PR so you get a green check as evidence of CI/CD
 on:
   push:
     branches: [ "**" ]
@@ -24,26 +23,28 @@ jobs:
             exit 1
           fi
           echo "/docs folder found."
+          echo "Contents of /docs:"
+          ls -la docs
 
-      - name: Check for ERD (PNG or PDF)
+      - name: Check for at least one PDF or image (ERD)
         run: |
           shopt -s nullglob
-          matches=(docs/*.png docs/*.pdf docs/*ERD*)
+          matches=(docs/*.pdf docs/*.png docs/*.jpg docs/*.jpeg)
           if [ ${#matches[@]} -eq 0 ]; then
-            echo "::error::No ERD file (PNG or PDF) found in /docs."
+            echo "::error::No ERD/plan document (PDF, PNG, or JPG) found in /docs."
             exit 1
           fi
-          echo "ERD file found: ${matches[0]}"
+          echo "Found document(s): ${matches[*]}"
 
-      - name: Check for API endpoint plan (PDF or Markdown)
+      - name: Check for at least 2 PDF/image docs (ERD + Endpoint Plan)
         run: |
           shopt -s nullglob
-          matches=(docs/*ndpoint* docs/*.md)
-          if [ ${#matches[@]} -eq 0 ]; then
-            echo "::error::No API endpoint plan (PDF or .md) found in /docs."
+          matches=(docs/*.pdf docs/*.png docs/*.jpg docs/*.jpeg)
+          if [ ${#matches[@]} -lt 2 ]; then
+            echo "::error::Expected at least 2 planning documents (ERD and API Endpoint Plan) in /docs, found ${#matches[@]}."
             exit 1
           fi
-          echo "API endpoint plan found: ${matches[0]}"
+          echo "Found ${#matches[@]} document(s): ${matches[*]}"
 
       - name: Check for SQL database script
         run: |
