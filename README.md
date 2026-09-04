@@ -73,7 +73,7 @@ on every push and validates that:
 An unlisted YouTube video walking through the ERD decisions, the endpoint
 plan choices, and a live run of the SQL script in SSMS:
 
-`[Insert your unlisted YouTube link here]`
+`https://youtu.be/yu-rts8Rn6A?si=tr2OV-cduloKOTBc
 
 ---
 
