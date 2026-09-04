@@ -1,8 +1,13 @@
 /* ============================================================
    RaceDay Database Script
    Module: PROG6212/w - Programming 2B - POE Part 1
-   Run in SQL Server Management Studio (SSMS) on a clean instance.
+   .
+
+   
    ============================================================ */
+
+USE master;
+GO
 
 IF DB_ID('RaceDayDB') IS NOT NULL
 BEGIN
