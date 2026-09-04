@@ -63,6 +63,7 @@ on every push and validates that:
 - `README.md` exists at the repository root.
 
 **Green build screenshot:**
+<img width="1335" height="641" alt="image" src="https://github.com/user-attachments/assets/f518d744-5962-4918-9468-c61680ab9bf1" />
 
 `
 ---
